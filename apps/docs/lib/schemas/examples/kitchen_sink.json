@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last Name"
+    },
+    "age": {
+      "type": "integer",
+      "title": "Age"
+    },
+    "address": {
+      "type": "object",
+      "title": "Address",
+      "properties": {
+        "address1": {
+          "type": "string",
+          "title": "Address One"
+        },
+        "address2": {
+          "type": "string",
+          "title": "Address Two (Optional)"
+        },
+        "city": {
+          "type": "string",
+          "title": "City"
+        },
+        "state": {
+          "type": "string",
+          "title": "State"
+        },
+        "zipcode": {
+          "type": "integer",
+          "title": "Zip Code"
+        }
+      },
+      "required": [
+        "address1",
+        "city",
+        "state",
+        "zipcode"
+      ]
+    },
+    "games": {
+      "type": "array",
+      "title": "Games",
+      "$ref": "#/$defs/game"
+    }
+  },
+  "$defs": {
+    "game": {
+      "type": "object",
+      "required": [
+        "year",
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "title": "Title"
+        },
+        "year": {
+          "type": "integer",
+          "title": "Release Year"
+        }
+      }
+    }
+  },
+  "required": [
+    "firstName",
+    "age"
+  ]
+}
