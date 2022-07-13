@@ -1,78 +1,85 @@
-# Turborepo starter
+# React Hook Form Schema
 
-This is an official Yarn v1 starter turborepo.
+## Features & Vision
 
-## What's inside?
+Welcome to react-hook-form-schema the [React Hook Form](https://react-hook-form.com/),
+you know and love supercharged with [json-schema](https://json-schema.org/)
+parsing, custom components and layouts. RHFS supports or will support **custom components**, **layouts**, **validation**, **remote submission** and more.
 
-This turborepo uses [Yarn](https://classic.yarnpkg.com/lang/en/) as a package manager. It includes the following packages/apps:
+The main goal of RHFS is to provide a bridge between [json-schema](https://json-schema.org/) and [React Hook Form](https://react-hook-form.com/). RHFS provides a very minimal unstyled component set for testing but you the developer are expected to BYOC (Bring your own components), We provide a simple api for integrating your own [Component Dictionary](#component-dictionary)
 
-### Apps and Packages
+## Getting Started
 
-- `docs`: a [Next.js](https://nextjs.org) app
-- `web`: another [Next.js](https://nextjs.org) app
-- `ui`: a stub React component library shared by both `web` and `docs` applications
-- `config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `tsconfig`: `tsconfig.json`s used throughout the monorepo
+To get started install react-hook-form-schema using the package manager of your choice.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+#### Npm Installation
 
-### Utilities
-
-This turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
-
-## Setup
-
-This repository is used in the `npx create-turbo` command, and selected when choosing which package manager you wish to use with your monorepo (Yarn).
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-yarn run build
+```bash
+npm install react-hook-form-schema
 ```
 
-### Develop
+#### Yarn Installation
 
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-yarn run dev
+```bash
+yarn install react-hook-form-schema
 ```
 
-### Remote Caching
+## Basic Example
 
-Turborepo can use a technique known as [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+```tsx
+import { FormSchema } from "react-hook-form-schema";
 
-By default, Turborepo will cache locally. To enable Remote Caching (Beta) you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
-
+export default function MyForm() {
+  return (
+    <FormSchema
+      name="my-form"
+      schema={{
+        $schema: "http://json-schema.org/draft-07/schema#",
+        type: "object",
+        properties: {
+          firstName: {
+            type: "string",
+            title: "First name",
+          },
+          lastName: {
+            type: "string",
+            title: "Last name",
+          },
+        },
+        required: ["firstName", "lastName"],
+      }}
+      defaultValues={{ firstName: "", lastName: "" }}
+      onSubmit={(values) => console.log(values)}
+    />
+  );
+}
 ```
-cd my-turborepo
-npx turbo login
+
+<h2 id="component-dictionary">Component Dictionary</h2>
+
+```tsx
+import { FormSchema } from "react-hook-form-schema";
+
+const TextInput = ({ register, name, label, required = false }) => (
+  <div>
+    <label>{label}</label>
+    <input {...register(name, { required })} />
+  </div>
+);
+
+export default function MyForm() {
+  return (
+    <FormSchema
+      name="my-form"
+      schema={{
+        ...schema,
+      }}
+      defaultValues={{ firstName: "", lastName: "" }}
+      onSubmit={(values) => console.log(values)}
+      components={{
+        string: TextInput,
+      }}
+    />
+  );
+}
 ```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your turborepo:
-
-```
-npx turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Pipelines](https://turborepo.org/docs/features/pipelines)
-- [Caching](https://turborepo.org/docs/features/caching)
-- [Remote Caching (Beta)](https://turborepo.org/docs/features/remote-caching)
-- [Scoped Tasks](https://turborepo.org/docs/features/scopes)
-- [Configuration Options](https://turborepo.org/docs/reference/configuration)
-- [CLI Usage](https://turborepo.org/docs/reference/command-line-reference)
