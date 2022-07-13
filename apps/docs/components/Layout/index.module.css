@@ -1,0 +1,19 @@
+.fullWidthBg {
+  @apply w-full bg-gradient-to-r from-pink-600 to-sky-400;
+}
+
+.innerContainer {
+  @apply container mx-auto pt-8 pb-32;
+}
+
+.shaded {
+  @apply bg-black/40 p-8 rounded shadow-xl;
+}
+
+.navContainer {
+  @apply flex flex-wrap items-center space-x-4 w-full bg-black/60 rounded p-8 shadow-xl mb-4;
+}
+
+.navItems {
+  @apply flex flex-wrap items-center space-x-8 mr-8 text-white font-medium uppercase;
+}

@@ -5,7 +5,7 @@ import { markdownToHtml } from "lib/markdown";
 export default function Docs({ html }) {
   return (
     <Layout>
-      <div className="bg-white rounded max-w-none prose lg:prose-xl p-32">
+      <div className="bg-white rounded max-w-none prose lg:prose-xl lg:p-32 p-4">
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </Layout>

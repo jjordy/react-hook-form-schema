@@ -1,5 +1,5 @@
-import "styles/globals.css";
-// import "./styles/synthwave84.css";`
+import "../css/globals.css";
+import "../css/synthwave84.css";
 
 import { FormSchemaProvider } from "react-hook-form-schema";
 

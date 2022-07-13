@@ -1,7 +1,0 @@
-.container {
-  @apply min-h-screen min-w-screen bg-gradient-to-r from-pink-600 to-sky-400;
-}
-
-.shaded {
-  @apply;
-}

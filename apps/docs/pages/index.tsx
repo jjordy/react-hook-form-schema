@@ -6,9 +6,9 @@ export default function Docs() {
   return (
     <Layout>
       <div className="flex w-full flex-col justify-center">
-        <div className="text-center space-y-2 text-white">
-          <h1 className="text-4xl font-medium">React Hook Form Schema</h1>
-          <h2 className="text-2xl font-semibold">
+        <div className="text-center space-y-6 text-white">
+          <h1 className="text-6xl font-black">React Hook Form Schema</h1>
+          <h2 className="text-4xl font-bold tracking-tighter">
             The{" "}
             <a
               href="https://react-hook-form.com/"
@@ -28,7 +28,7 @@ export default function Docs() {
             </a>
             <JsonSchemaLogo />
           </h3>
-          <div className="relative h-[600px]">
+          <div className="relative h-[700px]">
             <Image
               src="/vscode_example.PNG"
               alt="Vscode Example"
@@ -37,7 +37,7 @@ export default function Docs() {
             />
           </div>
           <div className="space-y-16 p-4 flex justify-center w-full">
-            <pre className="bg-black/80 text-pink-400 rounded max-w-4xl font-bold p-4 w-full">
+            <pre className="bg-black/80 text-pink-600 rounded max-w-4xl font-bold p-4 w-full">
               <code>npm install -g react-hook-form-schema</code>
             </pre>
           </div>
