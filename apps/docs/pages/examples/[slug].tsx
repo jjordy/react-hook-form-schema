@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import { FormSchema, JSONFormSchema } from "react-hook-form-schema";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-
+import { ComponentDictionary } from "components/elements/Forms";
 const JSONViewer = dynamic(() => import("react-json-view"), { ssr: false });
 
 function exampleFetcher(url) {
@@ -35,6 +35,7 @@ export default function KitchenSinkExample() {
             className=""
             name="my-default-form"
             schema={data}
+            components={ComponentDictionary}
             defaultValues={{
               firstName: "test",
               lastName: "test",

@@ -7,4 +7,5 @@ export type {
   FormSchemaProps,
   DefaultComponentDictionary,
   JSONFormSchema,
+  FieldComponentProps,
 } from "./types";

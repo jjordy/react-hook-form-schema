@@ -9,25 +9,29 @@ function renderArrayItems({
   idx,
   ...rest
 }: any) {
-  return items.map(({ type, ...fieldProps }: any, index: number) => {
-    const Component = components[type] ?? components[type];
-    if (!Component) {
-      console.warn(
-        `Component: ${type} was not found. Check the 'interface' key 
+  return items.map(
+    ({ type, component = null, ...fieldProps }: any, index: number) => {
+      const Component =
+        components[component || type] ?? components[component || type];
+      if (!Component) {
+        console.warn(
+          `Component: ${type} was not found. Check the 'interface' key 
          and make sure it matches something in your component dictionary.`
+        );
+        return null;
+      }
+      return (
+        <Component
+          {...rest}
+          {...fieldProps}
+          name={`${parentName}.${idx}.${fieldProps.name}`}
+          id={`id_${parentName}.${idx}.${fieldProps.name}`}
+          components={components}
+          key={`${key}_${index}`}
+        />
       );
-      return null;
     }
-    return (
-      <Component
-        {...rest}
-        {...fieldProps}
-        name={`${parentName}.${idx}.${fieldProps.name}`}
-        components={components}
-        key={`${key}_${index}`}
-      />
-    );
-  });
+  );
 }
 
 export default function ArrayField({
@@ -58,23 +62,13 @@ export default function ArrayField({
 
   return (
     <div>
-      <h3
-        style={{
-          fontSize: `1.5rem`,
-          marginTop: ".5rem",
-          marginBottom: ".5rem",
-        }}
-      >
-        {title}
-      </h3>
-      <hr style={{ marginTop: ".5rem", marginBottom: ".5rem" }} />
       {fields?.map((field, index: number) => (
-        <div className="flex items-end w-full">
+        <div
+          className="flex items-end w-full"
+          key={field.__internal__form_array_id}
+        >
           <div className="w-5/6">
-            <div
-              key={field.__internal__form_array_id}
-              className={`grid grid-cols-2 gap-8`}
-            >
+            <div className={`grid grid-cols-2 gap-8`}>
               {renderArrayItems({
                 ...rest,
                 components,

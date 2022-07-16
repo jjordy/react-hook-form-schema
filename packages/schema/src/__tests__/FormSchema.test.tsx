@@ -1,54 +1,73 @@
 import React from "react";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import * as yup from "yup";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  cleanup,
+  act,
+} from "@testing-library/react";
 import { FormSchema } from "../FormSchema";
-import { it, expect, describe } from "vitest";
+import { JSONFormSchema } from "../types";
+import { UseFormReturn } from "react-hook-form";
 
-const props = {
-  schema: {
-    fields: {
-      firstName: {
-        type: "text",
-        label: "First Name",
-      },
-      label: {
-        type: "text",
-        label: "Last Name",
-      },
+const schema: JSONFormSchema = {
+  $schema: "http://json-schema.org/draft-07/schema#",
+  type: "object",
+  properties: {
+    firstName: {
+      type: "string",
+      title: "First Name",
+    },
+    lastName: {
+      type: "string",
+      title: "Last Name",
     },
   },
-  components: {},
+};
+const props = {
+  schema,
   name: "my-test-form",
-  onSubmit: () => {},
+  onSubmit: jest.fn(),
   defaultValues: {
     firstName: "",
     lastName: "",
   },
 };
 describe("Basic Form Schema", () => {
-  it("should submit the form", async () => {
-    render(<FormSchema {...props} />);
-    fireEvent.submit(screen.getByTestId("test_my-test-form"));
-    await waitFor(() => {
-      expect(props.onSubmit).toHaveBeenCalledTimes(1);
+  it("should render the form", async () => {
+    const wrapper = render(<FormSchema {...props} />);
+    await act(() => {
+      wrapper.getByRole("form");
     });
   });
 
-  it("should not submit when there are form validation errors.", async () => {
-    const validations = yup
-      .object()
-      .shape({
-        firstName: yup.string().required(),
-        lastName: yup.string().required(),
-      })
-      .required();
+  it("should pass a className to the underlying form element", async () => {
+    expect.assertions(1);
+    const wrapper = render(<FormSchema {...props} className="test" />);
+    await act(() => {
+      const form = wrapper.getByRole("form");
+      expect(form.className).toEqual("test");
+    });
+  });
 
-    render(<FormSchema {...props} validations={validations} />);
-    fireEvent.submit(screen.getByTestId("test_my-test-form"));
-    await waitFor(() => {
-      expect(props.onSubmit).toHaveBeenCalledTimes(0);
+  it("should render the correct fields", async () => {
+    expect.assertions(4);
+    const wrapper = render(<FormSchema {...props} />);
+    const test = await wrapper.findAllByRole("textbox");
+    expect(test.length).toEqual(2);
+    const firstInput = test[0] as HTMLInputElement;
+    const secondInput = test[1] as HTMLInputElement;
+    expect(firstInput.name).toEqual("firstName");
+    expect(secondInput.name).toEqual("lastName");
+    expect(firstInput.id).toEqual("id_firstName");
+  });
+
+  it("Should render its children as a function and provide the useForm response", async () => {
+    const mockChildFn = jest.fn();
+    const wrapper = render(<FormSchema {...props} children={mockChildFn} />);
+    await act(() => {
+      expect(mockChildFn).toHaveBeenCalledTimes(1);
     });
   });
 });
-
-export {};

@@ -24,7 +24,7 @@ export default function TextInput({
           marginBottom: ".5rem",
           marginTop: ".2rem",
           fontWeight: "bold",
-          color: "#787878",
+          color: "#222",
         }}
       >
         {title || label || name}
@@ -33,7 +33,7 @@ export default function TextInput({
         type={type}
         {...register(name)}
         id={`id_${name}`}
-        className="w-full mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        style={{ width: "100%" }}
       />
     </div>
   );

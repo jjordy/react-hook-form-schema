@@ -16,6 +16,7 @@ export function FormSchemaProvider({ children }: FormSchemaProviderProps) {
   const registerForm = useCallback((v: any) => {
     setForms({ ...forms, v });
   }, []);
+
   return (
     <FormContext.Provider value={{ registerForm }}>
       {children}

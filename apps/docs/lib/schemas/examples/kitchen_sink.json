@@ -32,7 +32,30 @@
         },
         "state": {
           "type": "string",
-          "title": "State"
+          "title": "State",
+          "anyOf": [
+            {
+              "type": "string",
+              "title": "MS",
+              "enum": [
+                "MS"
+              ]
+            },
+            {
+              "type": "string",
+              "title": "AL",
+              "enum": [
+                "AL"
+              ]
+            },
+            {
+              "type": "string",
+              "title": "FL",
+              "enum": [
+                "FL"
+              ]
+            }
+          ]
         },
         "zipcode": {
           "type": "integer",

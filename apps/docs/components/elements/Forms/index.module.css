@@ -1,0 +1,15 @@
+.inputBase {
+  @apply w-full mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+}
+
+.label {
+  @apply mb-2 ml-0.5 font-medium text-slate-300;
+}
+
+.fieldGroup {
+  @apply flex flex-col space-y-2 mb-2;
+}
+
+.select {
+  @apply relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm;
+}

@@ -1,8 +1,8 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
+import { FormContext } from "./FormContext";
 import RenderSchema from "./RenderSchema";
-import RenderComponent from "./RenderComponent";
 import type { FormSchemaProps } from "./types";
 
 export const FormSchema = ({
@@ -15,12 +15,17 @@ export const FormSchema = ({
   components = {},
   children = () => <></>,
 }: FormSchemaProps) => {
+  const ctx = useContext(FormContext);
   const { handleSubmit, ...formProps } = useForm({
     resolver: validations ? yupResolver(validations) : undefined,
     defaultValues,
   });
   const formRef = useRef(null);
-
+  useEffect(() => {
+    if (ctx && formRef.current) {
+      ctx.registerForm({ name, ref: formRef.current });
+    }
+  }, []);
   return (
     <form
       data-testid={`test_${name}`}
@@ -30,7 +35,6 @@ export const FormSchema = ({
       name={name}
     >
       <RenderSchema
-        RenderComponent={RenderComponent}
         formProps={formProps}
         schema={schema}
         components={components}

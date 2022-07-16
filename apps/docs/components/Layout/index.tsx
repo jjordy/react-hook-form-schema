@@ -47,6 +47,9 @@ export default function Layout({ children }) {
           <div>
             <main>{children}</main>
           </div>
+          <div className="text-center text-white font-medium">
+            Built by <a href="https://github.com/jjordy">@jjordy</a>
+          </div>
         </div>
       </div>
     </div>

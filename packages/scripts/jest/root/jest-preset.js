@@ -1,4 +1,5 @@
 module.exports = {
+  roots: ["<rootDir>"],
   transform: {
     ".(ts|tsx)$": "ts-jest",
     ".(js|jsx)$": "babel-jest", // jest's default
@@ -7,8 +8,8 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
   projects: [
     "<rootDir>/packages/*",
-    "<rootDir>/playground/*",
     "<rootDir>/apps/*",
+    "<rootDir>/packages/schema/*",
   ],
   coverageDirectory: "<rootDir>/coverage/",
   collectCoverageFrom: ["<rootDir>/packages/*/src/**/*.{ts,tsx}"],
@@ -17,4 +18,5 @@ module.exports = {
     ".json$": "identity-obj-proxy",
   },
   moduleDirectories: ["node_modules"],
+  testEnvironment: "jsdom",
 };

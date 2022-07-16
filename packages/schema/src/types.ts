@@ -1,6 +1,7 @@
 import React from "react";
 import * as Yup from "yup";
 import { JSONSchema } from "@apidevtools/json-schema-ref-parser";
+import { UseFormReturn } from "react-hook-form";
 
 export type KnownKeys<T> = {
   [K in keyof T]: string extends K ? never : number extends K ? never : K;
@@ -9,6 +10,9 @@ export type KnownKeys<T> = {
   : never;
 
 export type JSONFormSchema = {} & JSONSchema;
+
+export type FieldComponentProps = {} & Field &
+  Omit<UseFormReturn, "handleSubmit">;
 
 export interface Field {
   type: KnownKeys<DefaultComponentDictionary>;
@@ -37,6 +41,6 @@ export interface FormSchemaProps {
   defaultValues: any;
   onSubmit: (values: any) => void;
   children?: (...props: any) => React.ReactNode;
-  components?: Record<string, React.ReactNode>;
+  components?: Record<string, React.ElementType<any>>;
   className?: string;
 }
