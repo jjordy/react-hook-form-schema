@@ -1,4 +1,11 @@
+---
+  title: Getting Started
+  slug: getting-started
+---
+
 # React Hook Form Schema
+
+## Table of Contents
 
 ## Features & Vision
 
@@ -8,23 +15,23 @@ parsing, custom components and layouts. RHFS supports or will support **custom c
 
 The main goal of RHFS is to provide a bridge between [json-schema](https://json-schema.org/) and [React Hook Form](https://react-hook-form.com/). RHFS provides a very minimal unstyled component set for testing but you the developer are expected to BYOC (Bring your own components), We provide a simple api for integrating your own [Component Dictionary](#component-dictionary)
 
-## Getting Started
+## Getting Started {#getting-started}
 
 To get started install react-hook-form-schema using the package manager of your choice.
 
-#### Npm Installation
+### Npm Installation {#npm-installation}
 
 ```bash
 npm install react-hook-form-schema
 ```
 
-#### Yarn Installation
+### Yarn Installation {#yarn-installation}
 
 ```bash
 yarn install react-hook-form-schema
 ```
 
-## Basic Example
+## Basic Example {#basic-example}
 
 ```tsx
 import { FormSchema } from "react-hook-form-schema";
@@ -55,7 +62,7 @@ export default function MyForm() {
 }
 ```
 
-<h2 id="component-dictionary">Component Dictionary</h2>
+## Component Dictionary {#component-dictionary}
 
 ```tsx
 import { FormSchema } from "react-hook-form-schema";

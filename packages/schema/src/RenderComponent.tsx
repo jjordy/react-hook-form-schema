@@ -1,17 +1,22 @@
 import React from "react";
+import { UseFormReturn } from "react-hook-form";
 import ComponentDictionary, { ComponentTypeMap } from "./fields";
 import { Field } from "./types";
+import get from "lodash.get";
 
-interface RenderComponentProps {
+interface RenderComponentProps extends Omit<UseFormReturn, "handleSubmit"> {
   components: Record<string, React.ElementType<any>>;
   field: Field;
+  controls: Record<string, React.ElementType<any>>;
 }
 
 export default function RenderComponent({
   components,
   field: { type, component = null, ...fieldProps },
+  formState,
   ...rest
 }: RenderComponentProps) {
+  const error = get(formState.errors, fieldProps.name, null);
   const allComponents: any = { ...ComponentDictionary, ...components };
   /**
    * If theres a component prop passed then we use that to override
@@ -32,10 +37,18 @@ export default function RenderComponent({
     console.warn(
       `Component: ${
         component || type
-      } was not found. Check the 'interface' key and make sure it matches something in your component dictionary.`
+      } was not found. Check the 'type' or 'component' key and make sure it matches something in your component dictionary.`
     );
     return null;
   }
 
-  return <Component {...fieldProps} {...rest} components={allComponents} />;
+  return (
+    <Component
+      {...fieldProps}
+      {...rest}
+      formState={formState}
+      components={allComponents}
+      error={error}
+    />
+  );
 }

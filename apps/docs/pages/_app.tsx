@@ -8,9 +8,6 @@ import Head from "next/head";
 export default function MyApp({ Component, pageProps }) {
   return (
     <FormSchemaProvider>
-      <Head>
-        <title>React Hook Form Schema</title>
-      </Head>
       <Component {...pageProps} />
     </FormSchemaProvider>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import * as Yup from "yup";
 import { JSONSchema } from "@apidevtools/json-schema-ref-parser";
 import { UseFormReturn } from "react-hook-form";
 
@@ -11,13 +10,30 @@ export type KnownKeys<T> = {
 
 export type JSONFormSchema = {} & JSONSchema;
 
+export type UIControls = {
+  RowRenderer: React.ReactNode;
+  AddRowButton: React.ReactNode;
+  RemoveRowButton: React.ReactNode;
+  SubmitButton: React.ReactNode;
+  ArrayErrorMessage: React.ReactNode;
+  ArrayTitle: React.ReactNode;
+  RowContainer: React.ReactNode;
+};
+
+export type UISchema = {
+  rowMap?: string[][];
+  controls: UIControls;
+};
+
 export type FieldComponentProps = {} & Field &
   Omit<UseFormReturn, "handleSubmit">;
 
 export interface Field {
   type: KnownKeys<DefaultComponentDictionary>;
   name: string;
-  label: string;
+  label?: string;
+  title?: string;
+  description?: string;
   [key: string]: any;
 }
 
@@ -34,13 +50,7 @@ export interface FormContext {
   registerForm: (v: any) => any;
 }
 
-export interface FormSchemaProps {
-  validations?: Yup.AnyObjectSchema;
-  name: string;
-  schema: JSONFormSchema;
-  defaultValues: any;
-  onSubmit: (values: any) => void;
-  children?: (...props: any) => React.ReactNode;
-  components?: Record<string, React.ElementType<any>>;
-  className?: string;
-}
+export type AnyOfRecord = {
+  fieldName: string;
+  visible: boolean;
+};

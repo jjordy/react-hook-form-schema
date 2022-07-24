@@ -3,17 +3,17 @@
 }
 
 .innerContainer {
-  @apply container mx-auto pt-8 pb-32;
-}
-
-.shaded {
-  @apply bg-black/40 p-8 rounded shadow-xl;
+  @apply px-1 md:px-8 pt-20 md:pt-32;
 }
 
 .navContainer {
-  @apply flex flex-wrap items-center space-x-4 w-full bg-black/60 rounded p-8 shadow-xl mb-4;
+  @apply flex fixed flex-wrap items-center w-full bg-black/60 p-4 md:p-8 shadow-xl top-0 left-0 z-10;
+}
+
+.navInnerWrapper {
+  @apply container mx-auto;
 }
 
 .navItems {
-  @apply flex flex-wrap items-center space-x-8 mr-8 text-white font-medium uppercase;
+  @apply flex flex-wrap items-center text-white font-medium uppercase;
 }

@@ -1,10 +1,8 @@
 # Api
 
----
+## Table Of Contents
 
-## </> FormSchema: [FormSchemaProps](#FormSchemaProps)
-
----
+## </> Form Schema {#form-schema}
 
 This workhorse schema component
 
@@ -21,20 +19,20 @@ This workhorse schema component
 />
 ```
 
-<h3 id="FormSchemaProps">Form Schema Props</h3>
+### Form Schema Props {#form-schema-props}
 
-| Name              | Type       | Description                                                                                               |
-| ----------------- | ---------- | --------------------------------------------------------------------------------------------------------- |
-| **name**          | string     | A friendly name you can use to look your from up if you need to remote submit                             |
-| **schema**        | JSONSchema | A valid JSON schema describing your form                                                                  |
-| **defaultValues** | object     | Optionally pass some default values to your form schema                                                   |
-| **onSubmit**      | object     | Your submit handler will be passed your form values                                                       |
-| **components**    | object     | A key value of your components the key should be the name you want to match the `name` or `type` against. |
-| **validations**   | object     | An optional yup schema to validate against your form schema                                               |
-| **className**     | object     | An optional class name to pass to the underlying form element                                             |
-| **children**      | function   | An optional escape hatch to render the parsed form schema yourself                                        |
+| Name              | Type       | Description                                                                                                    |
+| ----------------- | ---------- | -------------------------------------------------------------------------------------------------------------- |
+| **name**          | string     | A friendly name you can use to look your from up if you need to remote submit                                  |
+| **schema**        | JSONSchema | A valid JSON schema describing your form                                                                       |
+| **defaultValues** | object     | Optionally pass some default values to your form schema                                                        |
+| **onSubmit**      | object     | Your submit handler will be passed your form values                                                            |
+| **components**    | object     | A key value of your components the key should be the name you want to match the `component` or `type` against. |
+| **validations**   | object     | An optional yup schema to validate against your form schema                                                    |
+| **className**     | object     | An optional class name to pass to the underlying form element                                                  |
+| **children**      | function   | An optional escape hatch to render the parsed form schema yourself                                             |
 
-## </> FormContext: [FormContextProps](#FormContextProps)
+## </> FormContext: {#form-context}
 
 Wrap your app in the FormSchemaProvider component to allow remote submit and tracking forms outside of the context.
 
@@ -51,7 +49,7 @@ export default function MyApp({ Component, pageProps }) {
 }
 ```
 
-<h3 id="FormContextProps">Form Context Props</h3>
+### Form Context Props {#form-context-props}
 
 | Name     | Type   | Description                                                                   |
 | -------- | ------ | ----------------------------------------------------------------------------- |

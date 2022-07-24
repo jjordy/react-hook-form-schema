@@ -1,5 +1,6 @@
 import React from "react";
 import { FieldValues, useFieldArray } from "react-hook-form";
+import get from "lodash.get";
 
 function renderArrayItems({
   key,
@@ -7,10 +8,16 @@ function renderArrayItems({
   items,
   components,
   idx,
+  formState,
   ...rest
 }: any) {
   return items.map(
     ({ type, component = null, ...fieldProps }: any, index: number) => {
+      const error = get(
+        formState.errors,
+        `${parentName}.${idx}.${fieldProps.name}`,
+        null
+      );
       const Component =
         components[component || type] ?? components[component || type];
       if (!Component) {
@@ -24,6 +31,7 @@ function renderArrayItems({
         <Component
           {...rest}
           {...fieldProps}
+          error={error}
           name={`${parentName}.${idx}.${fieldProps.name}`}
           id={`id_${parentName}.${idx}.${fieldProps.name}`}
           components={components}
@@ -39,16 +47,18 @@ export default function ArrayField({
   items,
   name,
   control,
+  controls,
   title,
+  error,
   ...rest
 }: any) {
   const { fields, remove, append } = useFieldArray<
     FieldValues,
     string,
-    "__internal__form_array_id"
+    "rhfs__internal__form_array_id"
   >({
     control,
-    keyName: "__internal__form_array_id",
+    keyName: "rhfs__internal__form_array_id",
     name,
     ...rest,
   });
@@ -59,44 +69,29 @@ export default function ArrayField({
       acc[curr] = "";
       return acc;
     }, {});
-
   return (
     <div>
+      <controls.ArrayTitle>{title}</controls.ArrayTitle>
       {fields?.map((field, index: number) => (
-        <div
-          className="flex items-end w-full"
-          key={field.__internal__form_array_id}
-        >
-          <div className="w-5/6">
-            <div className={`grid grid-cols-2 gap-8`}>
-              {renderArrayItems({
-                ...rest,
-                components,
-                items,
-                parentName: name,
-                key: field.__internal__form_array_id,
-                idx: index,
-              })}
-            </div>
-          </div>
-          <div className="w-1/6 flex justify-end items-center">
-            <button
-              type="button"
-              onClick={() => remove(index)}
-              className="bg-red-500 px-2 py-2 font-medium text-white uppercase rounded"
-            >
-              Remove
-            </button>
-          </div>
-        </div>
+        <controls.RowContainer key={field.rhfs__internal__form_array_id}>
+          <controls.RowRenderer row={items}>
+            {renderArrayItems({
+              ...rest,
+              components,
+              items,
+              parentName: name,
+              key: field.rhfs__internal__form_array_id,
+              idx: index,
+            })}
+          </controls.RowRenderer>
+
+          <controls.RemoveRowButton onClick={() => remove(index)} />
+        </controls.RowContainer>
       ))}
-      <button
-        type="button"
-        onClick={() => append(addRowValues)}
-        className="py-2 px-3 bg-gray-500 mt-4 text-white font-medium rounded"
-      >
-        Add Row
-      </button>
+      <controls.AddRowButton onClick={() => append(addRowValues)} />
+      {error && (
+        <controls.ArrayErrorMessage>{error.message}</controls.ArrayErrorMessage>
+      )}
     </div>
   );
 }

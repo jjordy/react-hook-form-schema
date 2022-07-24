@@ -1,15 +1,40 @@
 .inputBase {
-  @apply w-full mt-1 block rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50;
+  @apply w-full 
+  mt-1 
+  block 
+  rounded-lg
+  h-10
+  border-gray-300 
+  shadow-md
+    py-2 
+  pl-3 
+  pr-10 
+  focus:border-pink-400 
+  focus:ring 
+  focus:ring-pink-300 
+  focus:ring-opacity-50;
+}
+
+.inputCheck {
+  @apply p-2.5 rounded mr-2 text-pink-500 focus:border-pink-400 focus:ring focus:ring-pink-300 my-8;
+}
+
+.error {
+  @apply border-2 border-pink-400;
 }
 
 .label {
-  @apply mb-2 ml-0.5 font-medium text-slate-300;
+  @apply mb-0.5 md:mb-2 ml-0.5 text-xs md:text-base font-medium text-white/50;
 }
 
 .fieldGroup {
-  @apply flex flex-col space-y-2 mb-2;
+  @apply flex flex-col space-y-1 mb-2;
 }
 
-.select {
-  @apply relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm;
+.fieldGroup p {
+  @apply text-pink-500 m-0 p-0 block font-medium;
+}
+
+.inline {
+  @apply flex-row items-center;
 }

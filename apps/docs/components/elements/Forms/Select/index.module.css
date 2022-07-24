@@ -1,0 +1,39 @@
+.select {
+  @apply relative 
+  w-full 
+  cursor-default 
+  rounded-lg 
+  bg-white 
+  py-2 
+  pl-3 
+  pr-10
+  h-10
+  text-left 
+  shadow-md 
+  focus:outline-none
+  focus:border-pink-400 
+  focus:ring 
+  focus:ring-pink-300 
+  focus:ring-opacity-50
+  sm:text-sm;
+}
+
+.optionsContainer {
+  @apply absolute 
+  mt-1 
+  max-h-60 
+  w-full 
+  overflow-auto 
+  rounded-md 
+  bg-white 
+  py-1 
+  text-base 
+  font-medium 
+  shadow-lg 
+  ring-1 
+  ring-black 
+  ring-opacity-5 
+  focus:outline-none 
+  sm:text-sm
+  z-20;
+}

@@ -1,9 +1,7 @@
 import React from "react";
 import type { FieldComponentProps } from "react-hook-form-schema";
 import styles from "./index.module.css";
-import { Controller } from "react-hook-form";
-import { Listbox, Transition } from "@headlessui/react";
-import { SelectorIcon } from "@heroicons/react/solid";
+import { PlusIcon, SaveAsIcon, XIcon } from "@heroicons/react/solid";
 
 const Label = ({ id, children }) => {
   return (
@@ -13,98 +11,141 @@ const Label = ({ id, children }) => {
   );
 };
 
-const FieldGroup = ({ children }) => (
-  <div className={styles.fieldGroup}>{children}</div>
+const FieldGroup = ({ children, inline = false }) => (
+  <div className={`${styles.fieldGroup} ${inline ? styles.inline : ""}`}>
+    {children}
+  </div>
 );
 
 export const ComponentDictionary = {
-  string: ({ label, register, name, id, title }: FieldComponentProps) => (
+  string: ({
+    label,
+    register,
+    name,
+    id,
+    title,
+    error,
+  }: FieldComponentProps) => (
     <FieldGroup>
       <Label id={id}>{title}</Label>
       <input
         type="text"
         {...register(name)}
         id={id}
-        className={styles.inputBase}
+        className={`${styles.inputBase} ${error ? styles.error : ""}`}
       />
+      <p>{error && error.message}</p>
     </FieldGroup>
   ),
-  integer: ({ label, register, name, id, title }: FieldComponentProps) => (
+  integer: ({
+    label,
+    register,
+    name,
+    id,
+    title,
+    error,
+  }: FieldComponentProps) => (
+    <FieldGroup>
+      <Label id={id}>{title}</Label>
+      <input
+        type="number"
+        {...register(name, { valueAsNumber: true })}
+        id={id}
+        className={`${styles.inputBase} ${error ? styles.error : ""}`}
+      />
+      <p>{error && error.message}</p>
+    </FieldGroup>
+  ),
+  number: ({ register, name, id, title, error }: FieldComponentProps) => (
     <FieldGroup>
       <Label id={id}>{title}</Label>
       <input
         type="number"
         {...register(name)}
         id={id}
-        className={styles.inputBase}
+        className={`${styles.inputBase} ${error ? styles.error : ""}`}
       />
-    </FieldGroup>
-  ),
-  number: ({ label, register, name, id, title }: FieldComponentProps) => (
-    <FieldGroup>
-      <Label id={id}>{title}</Label>
-      <input
-        type="number"
-        {...register(name)}
-        id={id}
-        className={styles.inputBase}
-      />
+      <p>{error && error.message}</p>
     </FieldGroup>
   ),
   select: ({
     title,
-    control,
     name,
-    required,
-    anyOf,
+    register,
+    options,
     id,
-    ...rest
+    error,
   }: FieldComponentProps) => {
-    console.log(anyOf, rest);
     return (
-      <Controller
-        name={name}
-        control={control}
-        rules={{ required }}
-        render={({ field }) => (
-          <div className="relative w-full">
-            <Label id={id}>{title}</Label>
-            <Listbox {...field} as="div">
-              <Listbox.Button className={`${styles.select}`}>
-                <span className="block truncate">{field.value}</span>
-                <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                  <SelectorIcon
-                    className="h-5 w-5 text-gray-400"
-                    aria-hidden="true"
-                  />
-                </span>
-              </Listbox.Button>
-              <Transition
-                as={React.Fragment}
-                leave="transition ease-in duration-100"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base font-medium shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                  {anyOf?.map((option, id) => (
-                    <Listbox.Option
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                          active ? "bg-pink-100 text-pink-900" : "text-gray-900"
-                        }`
-                      }
-                      value={option?.enum?.[0]}
-                      key={`${name}_${field.name}_option_${id}`}
-                    >
-                      {option.title}
-                    </Listbox.Option>
-                  ))}
-                </Listbox.Options>
-              </Transition>
-            </Listbox>
-          </div>
-        )}
-      />
+      <FieldGroup>
+        <Label id={id}>{title}</Label>
+        <select
+          {...register(name)}
+          id={id}
+          className={`${styles.inputBase} ${error ? styles.error : ""}`}
+        >
+          <option>Select a value</option>
+          {options?.map((option, idx) => (
+            <option value={option?.value} key={`${name}_opt_${idx}`}>
+              {option?.label}
+            </option>
+          ))}
+        </select>
+        <p>{error && error.message}</p>
+      </FieldGroup>
     );
   },
+  boolean: ({ title, name, register, id, error }) => {
+    return (
+      <FieldGroup inline>
+        <input
+          type="checkbox"
+          className={styles.inputCheck}
+          {...register(name)}
+          id={id}
+        />
+        <Label id={id}>{title}</Label>
+      </FieldGroup>
+    );
+  },
+};
+
+export const controls = {
+  RemoveRowButton: (props) => (
+    <button
+      className="p-1 ml-2 border-2 border-pink-500 text-pink-500 rounded-lg"
+      {...props}
+    >
+      <XIcon className="w-5 h-5" />
+    </button>
+  ),
+  AddRowButton: (props) => (
+    <button
+      type="button"
+      className=" bg-sky-100 flex items-center text-sky-500 p-1 rounded"
+      {...props}
+    >
+      <PlusIcon className="w-5 h-5" />
+    </button>
+  ),
+  SubmitButton: (props) => (
+    <button
+      type="submit"
+      className="flex items-center bg-green-100 text-green-500 px-3 py-2 mt-8 rounded font-medium w-full justify-center"
+      {...props}
+    >
+      Save Form <SaveAsIcon className="h-4 w-4 ml-2" />
+    </button>
+  ),
+  ArrayErrorMessage: ({ children }) => (
+    <p className="text-pink-500 font-medium">{children}</p>
+  ),
+  ArrayTitle: ({ children }) => (
+    <div className="text-3xl text-pink-500 font-thin mb-4">{children}</div>
+  ),
+  RowContainer: ({ children }) => (
+    <div className="p-2 border-sky-300 rounded-xl border-2 mb-4 flex items-start">
+      {children}
+    </div>
+  ),
 };

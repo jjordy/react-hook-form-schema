@@ -4,8 +4,9 @@ export { FormSchemaProvider } from "./FormContext";
 export type {
   Field,
   FormContext,
-  FormSchemaProps,
   DefaultComponentDictionary,
   JSONFormSchema,
   FieldComponentProps,
+  UISchema,
+  UIControls,
 } from "./types";

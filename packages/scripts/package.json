@@ -19,7 +19,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
     "babel-eslint": "^10.0.0",
-    "eslint": "^8.19.0",
+    "eslint": "^8.20.0",
     "eslint-config-react-app": "^7.0.0",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.22.0",
@@ -29,10 +29,10 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^28.1.3",
     "jest-environment-jsdom": "28.1.3",
-    "ts-jest": "^28.0.6",
+    "ts-jest": "^28.0.7",
     "typescript": "^4.7.4"
   },
   "devDependencies": {
-    "@types/jest": "^28.1.5"
+    "@types/jest": "^28.1.6"
   }
 }
