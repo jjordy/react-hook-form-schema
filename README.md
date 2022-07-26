@@ -1,5 +1,7 @@
 # React Hook Form Schema
 
+![React Hook Form Schema](https://github.com/jjordy/react-hook-form-schema/actions/workflows/build-and-test.yml/badge.svg)
+
 ## Features & Vision
 
 Welcome to react-hook-form-schema the [React Hook Form](https://react-hook-form.com/),
