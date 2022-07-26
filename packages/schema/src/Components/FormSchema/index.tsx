@@ -5,13 +5,9 @@ import RenderSchema from "../RenderSchema";
 import type {
   JSONFormSchema,
   UISchema,
-  KnownKeys,
   FieldComponentProps,
 } from "../../types";
-import { RHFSCustomSchemaOptions } from "../../lib/schemaOptions";
-import { ajvResolver } from "../../lib/ajvResolver";
 import { buildResolver } from "../../lib/buildResolver";
-import { resolve } from "@apidevtools/json-schema-ref-parser";
 
 export interface FormSchemaProps {
   uiSchema?: UISchema;
