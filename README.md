@@ -1,6 +1,8 @@
 # React Hook Form Schema
 
 ![React Hook Form Schema](https://github.com/jjordy/react-hook-form-schema/actions/workflows/build-and-test.yml/badge.svg)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@jjordy/swr-devtools)
+![npm](https://img.shields.io/npm/dm/@jjordy/swr-devtools)
 
 ## Features & Vision
 
