@@ -1,7 +1,7 @@
 import React from "react";
 import { UseFormReturn } from "react-hook-form";
-import ComponentDictionary, { ComponentTypeMap } from "./fields";
-import { Field } from "./types";
+import ComponentDictionary, { ComponentTypeMap } from "../fields";
+import { Field } from "../../types";
 import get from "lodash.get";
 
 interface RenderComponentProps extends Omit<UseFormReturn, "handleSubmit"> {

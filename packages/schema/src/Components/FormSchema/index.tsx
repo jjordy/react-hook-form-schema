@@ -1,9 +1,17 @@
-import { ajvResolver } from "@hookform/resolvers/ajv";
 import React, { useContext, useEffect, useRef } from "react";
-import { useForm } from "react-hook-form";
-import { FormContext } from "./FormContext";
-import RenderSchema from "./RenderSchema";
-import type { JSONFormSchema, UISchema } from "./types";
+import { useForm, Resolver } from "react-hook-form";
+import { FormContext } from "../FormContext";
+import RenderSchema from "../RenderSchema";
+import type {
+  JSONFormSchema,
+  UISchema,
+  KnownKeys,
+  FieldComponentProps,
+} from "../../types";
+import { RHFSCustomSchemaOptions } from "../../lib/schemaOptions";
+import { ajvResolver } from "../../lib/ajvResolver";
+import { buildResolver } from "../../lib/buildResolver";
+import { resolve } from "@apidevtools/json-schema-ref-parser";
 
 export interface FormSchemaProps {
   uiSchema?: UISchema;
@@ -25,18 +33,21 @@ export const FormSchema = ({
   onSubmit = (v) => console.log(v),
   components = {},
   uiSchema,
-  children = () => <></>,
+  debug = false,
+  children = (fieldProps: FieldComponentProps) => <></>,
 }: FormSchemaProps) => {
   const ctx = useContext(FormContext);
   const { handleSubmit, ...formProps } = useForm({
     shouldFocusError: false,
     resolver: async (data, context, options) => {
-      console.log("formData", data);
-      console.log(
-        "validation result",
-        await ajvResolver(schema)(data, context, options)
+      const resolver = await buildResolver(
+        schema,
+        debug,
+        data,
+        context,
+        options
       );
-      return ajvResolver(schema)(data, context, options);
+      return resolver(data, context, options);
     },
     defaultValues,
   });
@@ -54,7 +65,7 @@ export const FormSchema = ({
       )}
       ref={formRef}
       className={className}
-      // name={name}
+      name={name}
     >
       <RenderSchema
         formProps={formProps}

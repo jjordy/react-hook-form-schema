@@ -1,5 +1,8 @@
 // Custom walker for the tree-walk package that only visits schemas.
-//@ts-nocheck
+
+import { Vocabulary } from "ajv";
+import { JSONFormSchema } from "../types";
+
 const NEXT_SCHEMA_KEYWORD = "schemaWalk:nextSchemaKeyword";
 const NEXT_LDO_KEYWORD = "schemaWalk:nextLdoKeyword";
 
@@ -17,12 +20,13 @@ const NEXT_LDO_KEYWORD = "schemaWalk:nextLdoKeyword";
  *
  * Returns undefined if the path cannot be fully applied.
  */
-export var getSubschema = function (schema, path) {
+export var getSubschema = function (schema: JSONFormSchema, path: string[]) {
   let subschema = schema;
   for (let p of path) {
     if (subschema === undefined) {
       return undefined;
     }
+    //@ts-expect-error
     subschema = subschema[p];
   }
   return subschema;
@@ -32,7 +36,10 @@ export var getSubschema = function (schema, path) {
  * Get a vocabulary based on the $schema keyword, defaulting
  * to the most recent hyper-schema if none is present.
  */
-export var getVocabulary = function (schema, defaultVocabulary?: string) {
+export var getVocabulary = function (
+  schema: JSONFormSchema,
+  defaultVocabulary?: string
+) {
   let vocabulary;
   if (schema.$schema) {
     try {
@@ -57,7 +64,21 @@ export var getVocabulary = function (schema, defaultVocabulary?: string) {
 /**
  * Walk the entire schema, including the root schema.
  */
-export var schemaWalk = function (schema, preFunc, postFunc, vocabulary) {
+
+type Watcher =
+  | null
+  | ((
+      schemaObj: JSONFormSchema,
+      pathFromParent: string[],
+      parentSchemaObj: JSONFormSchema | undefined,
+      rootPath: any[]
+    ) => void);
+export var schemaWalk = function (
+  schema: JSONFormSchema,
+  preFunc: Watcher,
+  postFunc: Watcher,
+  vocabulary: any
+) {
   preFunc && preFunc(schema, [], undefined, []);
   subschemaWalk(schema, preFunc, postFunc, [], vocabulary);
   postFunc && postFunc(schema, [], undefined, []);
@@ -77,11 +98,11 @@ export var schemaWalk = function (schema, preFunc, postFunc, vocabulary) {
  * result in undefined behavior.
  */
 export var subschemaWalk = function (
-  schema,
-  preFunc,
-  postFunc,
-  parentPath,
-  vocabulary
+  schema: JSONFormSchema,
+  preFunc: Watcher,
+  postFunc: Watcher,
+  parentPath: string[],
+  vocabulary?: any
 ) {
   if (parentPath === undefined) {
     // Treat our parent schema as a root schema.
@@ -129,7 +150,7 @@ export var subschemaWalk = function (
  * Otherwise, this package will tolerate boolean schemas with
  * draft-04.
  */
-var _isSchema = function (schema) {
+var _isSchema = function (schema: JSONFormSchema) {
   return (
     (schema instanceof Object && !Array.isArray(schema)) ||
     typeof schema === "boolean"
@@ -137,12 +158,12 @@ var _isSchema = function (schema) {
 };
 
 var _processSchemaKeyword = function (
-  vocabulary,
-  schema,
-  keyword,
-  preFunc,
-  postFunc,
-  parentPath
+  vocabulary: any,
+  schema: JSONFormSchema,
+  keyword: string,
+  preFunc: Watcher,
+  postFunc: Watcher,
+  parentPath: any[]
 ) {
   vocabulary[keyword] &&
     vocabulary[keyword](schema, keyword, preFunc, postFunc, parentPath);
@@ -152,11 +173,11 @@ var _processSchemaKeyword = function (
  * Apply callbacks to a single schema.
  */
 var _processSingleSchema = function (
-  schema,
-  keyword,
-  preFunc,
-  postFunc,
-  parentPath
+  schema: JSONFormSchema,
+  keyword: string,
+  preFunc: Watcher,
+  postFunc: Watcher,
+  parentPath: any[]
 ) {
   _apply(schema, [keyword], preFunc, postFunc, parentPath);
 };
@@ -165,12 +186,13 @@ var _processSingleSchema = function (
  * Apply callbacks to each schema in an array.
  */
 var _processArrayOfSchemas = function (
-  schema,
-  keyword,
-  preFunc,
-  postFunc,
-  parentPath
+  schema: JSONFormSchema,
+  keyword: string,
+  preFunc: Watcher | null,
+  postFunc: Watcher | null,
+  parentPath: any[]
 ) {
+  //@ts-expect-error
   for (let i = 0; i < schema[keyword].length; i++) {
     _apply(schema, [keyword, i], preFunc, postFunc, parentPath);
   }
@@ -180,12 +202,13 @@ var _processArrayOfSchemas = function (
  * Apply callbacks to either a single schema or an array of schemas
  */
 var _processSingleOrArrayOfSchemas = function (
-  schema,
-  keyword,
-  preFunc,
-  postFunc,
-  parentPath
+  schema: JSONFormSchema,
+  keyword: string,
+  preFunc: Watcher,
+  postFunc: Watcher,
+  parentPath: any[]
 ) {
+  //@ts-expect-error
   if (_isSchema(schema[keyword])) {
     _processSingleSchema(schema, keyword, preFunc, postFunc, parentPath);
   } else {
@@ -197,12 +220,13 @@ var _processSingleOrArrayOfSchemas = function (
  * Apply callbacks to each schema in an object.
  */
 var _processObjectOfSchemas = function (
-  schema,
-  keyword,
-  preFunc,
-  postFunc,
-  parentPath
+  schema: JSONFormSchema,
+  keyword: string,
+  preFunc: Watcher,
+  postFunc: Watcher,
+  parentPath: any[]
 ) {
+  //@ts-expect-error
   for (let prop of Object.getOwnPropertyNames(schema[keyword])) {
     _apply(schema, [keyword, prop], preFunc, postFunc, parentPath);
   }
@@ -214,13 +238,15 @@ var _processObjectOfSchemas = function (
  * is recognizably not a schema, such as a string or number.
  */
 var _processObjectOfMaybeSchemas = function (
-  schema,
-  keyword,
-  preFunc,
-  postFunc,
-  parentPath
+  schema: JSONFormSchema,
+  keyword: string,
+  preFunc: Watcher,
+  postFunc: Watcher,
+  parentPath: any[]
 ) {
+  //@ts-expect-error
   for (let prop of Object.getOwnPropertyNames(schema[keyword])) {
+    //@ts-expect-error
     if (_isSchema(schema[keyword][prop])) {
       _apply(schema, [keyword, prop], preFunc, postFunc, parentPath);
     }
@@ -231,8 +257,14 @@ var _processObjectOfMaybeSchemas = function (
  * Loop over the links and apply the callbacks, while
  * handling LDO keyword deletions by catching NEXT_LDO_KEYWORD.
  */
-var _getProcessLinks = function (ldoVocabulary) {
-  return function (schema, keyword, preFunc, postFunc, parentPath) {
+var _getProcessLinks = function (ldoVocabulary: Record<string, any>) {
+  return function (
+    schema: any,
+    keyword: string,
+    preFunc: Watcher,
+    postFunc: Watcher,
+    parentPath: any[]
+  ) {
     for (let i = 0; i < schema.links.length; i++) {
       let ldo = schema.links[i];
       for (let keyword in ldo) {
@@ -266,14 +298,21 @@ var _getProcessLinks = function (ldoVocabulary) {
  * These exceptions allow callers to break out of loops that
  * would otherwise attempt to continue processing deleted subschemas.
  */
-var _apply = function (schema, path, preFunc, postFunc, parentPath) {
+var _apply = function (
+  schema: JSONFormSchema,
+  path: any[],
+  preFunc: Watcher,
+  postFunc: Watcher,
+  parentPath: any[]
+) {
   let subschema = getSubschema(schema, path);
-
+  //@ts-expect-error
   preFunc && preFunc(subschema, path, schema, parentPath);
 
   // Make sure we did not remove or change the subschema in question.
   subschema = getSubschema(schema, path);
   if (subschema === undefined) {
+    //@ts-expect-error
     if (path[0] === "links" && schema.links !== undefined) {
       // Deleting the LDO keywords is allowed.  Deleting an entire
       // LDO is not and is documented to produce undefined behavior

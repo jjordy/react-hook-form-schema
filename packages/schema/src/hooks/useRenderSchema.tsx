@@ -1,8 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { walkJSONSchema } from "../RenderSchema/walkJSONSchema";
+import { schemaToFields } from "../lib/schemaToFields";
 import $RefParser from "@apidevtools/json-schema-ref-parser";
-//@ts-expect-error
-import mergeAllOf from "json-schema-merge-allof";
 import produce from "immer";
 import { Field, JSONFormSchema, AnyOfRecord } from "../types";
 import { UseFormReturn } from "react-hook-form";
@@ -17,8 +15,8 @@ export default function useRenderSchema({
   formProps,
 }: UseRenderSchemaProps) {
   const [fields, setFields] = useState<Field[]>([]);
-  const [anyOf, setAnyOf] = useState<Record<string, AnyOfRecord[]>>({});
-  const [watchValues, setWatchValues] = useState<string[]>([]);
+  // const [anyOf, setAnyOf] = useState<Record<string, AnyOfRecord[]>>({});
+  // const [watchValues, setWatchValues] = useState<string[]>([]);
 
   const updateFields = useCallback(
     (field: Field[]) => {
@@ -39,40 +37,38 @@ export default function useRenderSchema({
     [fields]
   );
 
-  useEffect(() => {
-    const subscription = formProps.watch((value, { name }: any) => {
-      if (watchValues.includes(name) && anyOf[value[name]]) {
-        const conditionalFields = anyOf[value[name]];
-        const fieldsToUpdate = conditionalFields
-          .map(({ fieldName, visible }) => {
-            const field = fields.find((f: any) => f.name === fieldName);
-            if (field) {
-              const newField: Field = { ...field, visible };
-              return newField;
-            }
-            return null;
-          })
-          .filter((v) => {
-            if (!v) {
-              return false;
-            }
-            return true;
-          });
-        updateFields(fieldsToUpdate as Field[]);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [formProps, fields, updateFields]);
+  // useEffect(() => {
+  //   const subscription = formProps.watch((value, { name }: any) => {
+  //     if (watchValues.includes(name) && anyOf[value[name]]) {
+  //       const conditionalFields = anyOf[value[name]];
+  //       const fieldsToUpdate = conditionalFields
+  //         .map(({ fieldName, visible }) => {
+  //           const field = fields.find((f: any) => f.name === fieldName);
+  //           if (field) {
+  //             const newField: Field = { ...field, visible };
+  //             return newField;
+  //           }
+  //           return null;
+  //         })
+  //         .filter((v) => {
+  //           if (!v) {
+  //             return false;
+  //           }
+  //           return true;
+  //         });
+  //       updateFields(fieldsToUpdate as Field[]);
+  //     }
+  //   });
+  //   return () => subscription.unsubscribe();
+  // }, [formProps, fields, updateFields]);
 
   useEffect(() => {
     $RefParser
       .dereference(structuredClone(schema))
       .then((s) => {
         try {
-          const { normalized, anyOf, watchValues } = walkJSONSchema(s);
+          const { normalized } = schemaToFields(s);
           setFields(normalized);
-          setAnyOf(anyOf);
-          setWatchValues(watchValues);
         } catch (err: any) {
           console.warn(`Error parsing schema`, err);
         }

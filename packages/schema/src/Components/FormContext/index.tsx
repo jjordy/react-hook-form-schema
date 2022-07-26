@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { createContext } from "react";
-import type { FormContext as TFormContext } from "./types";
+import type { FormContext as TFormContext } from "../../types";
 
 export const FormContext = createContext<TFormContext>({
   registerForm: () => {},

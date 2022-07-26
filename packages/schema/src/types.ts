@@ -8,17 +8,21 @@ export type KnownKeys<T> = {
   ? U
   : never;
 
-export type JSONFormSchema = {} & JSONSchema;
+export type JSONFormSchema = {
+  component?: string;
+} & JSONSchema;
 
-export type UIControls = {
-  RowRenderer: React.ReactNode;
-  AddRowButton: React.ReactNode;
-  RemoveRowButton: React.ReactNode;
-  SubmitButton: React.ReactNode;
-  ArrayErrorMessage: React.ReactNode;
-  ArrayTitle: React.ReactNode;
-  RowContainer: React.ReactNode;
+type UIControlsMain = {
+  RowRenderer: React.ElementType<any>;
+  AddRowButton: React.ElementType<any>;
+  RemoveRowButton: React.ElementType<any>;
+  SubmitButton: React.ElementType<any>;
+  ArrayErrorMessage: React.ElementType<any>;
+  ArrayTitle: React.ElementType<any>;
+  RowContainer: React.ElementType<any>;
 };
+
+export type UIControls = Partial<UIControlsMain>;
 
 export type UISchema = {
   rowMap?: string[][];

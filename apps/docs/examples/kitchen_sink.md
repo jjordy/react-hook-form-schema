@@ -11,7 +11,6 @@
       "state": "",
       "zipcode": ""
     },
-    "requestType": {},
     "games": []
   },
   "uiSchema": {
@@ -31,10 +30,8 @@
         "address.zipcode"
       ],
       [
-        "requestType"
+        "dob"
       ],
-      ["requestType.name", "requestType.date"],
-      ["requestType.bogart", "requestType.woomppo"],
       [
         "games"
       ],
@@ -50,13 +47,13 @@
       "firstName": {
         "type": "string",
         "title": "First Name",
-        "minLength": 1,
+        "isNotEmpty": true,
         "errorMessage": "Please enter your first name"
       },
       "lastName": {
         "type": "string",
         "title": "Last Name",
-        "minLength": 1,
+        "isNotEmpty": true,
         "errorMessage": "Please enter your last name"
       },
       "age": {
@@ -64,40 +61,10 @@
         "title": "Age",
         "errorMessage": "Please enter your age"
       },
-      "requestType": {
-        "title": "Request Type",
-        "type": "object",
-        "anyOf": [
-          {
-            "title": "WithDrawal",
-            "properties": {
-              "name": {
-                "type": "string",
-                "title": "Request Name (Ticket Number)"
-              },
-              "date": {
-                "type": "string",
-                "title": "Date of Request"
-              }
-            }
-          },
-          {
-            "title": "WithDrawal 2",
-            "type": "object",
-            "properties": {
-              "bogart": {
-                "type": "string",
-                "title": "Decision Level",
-                "enum": ["Decision 1", "Decision 2", "Decision 3"]
-
-              },
-              "woomppo": {
-                "type": "string",
-                "title": "Toophy too"
-              }
-            }
-          }
-        ]
+      "dob": {
+        "type": "string",
+        "format": "date",
+        "title": "Date Of Birth"
       },
       "address": {
         "type": "object",

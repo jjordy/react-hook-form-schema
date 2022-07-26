@@ -75,6 +75,7 @@ export default function ExampleBySlug({ html, meta, guides, examples }) {
               <TabPanel>
                 <div className="bg-slate-900/40 rounded p-4 md:p-16">
                   <FormSchema
+                    debug
                     className=""
                     name="my-default-form"
                     schema={meta.schema}
@@ -92,7 +93,8 @@ export default function ExampleBySlug({ html, meta, guides, examples }) {
                 <div className="max-h-[500px] overflow-auto">
                   <JSONViewer
                     src={meta.schema}
-                    theme="ocean"
+                    theme="threezerotwofour"
+                    name={false}
                     displayDataTypes={false}
                     displayObjectSize={false}
                   />
@@ -102,7 +104,7 @@ export default function ExampleBySlug({ html, meta, guides, examples }) {
                 <div className="max-h-[500px] overflow-auto">
                   <JSONViewer
                     src={meta.uiSchema}
-                    theme="ocean"
+                    theme="threezerotwofour"
                     displayDataTypes={false}
                     displayObjectSize={false}
                   />

@@ -1,5 +1,5 @@
 import React from "react";
-import type { FieldComponentProps } from "react-hook-form-schema";
+import type { FieldComponentProps, UIControls } from "react-hook-form-schema";
 import styles from "./index.module.css";
 import { PlusIcon, SaveAsIcon, XIcon } from "@heroicons/react/solid";
 
@@ -18,14 +18,7 @@ const FieldGroup = ({ children, inline = false }) => (
 );
 
 export const ComponentDictionary = {
-  string: ({
-    label,
-    register,
-    name,
-    id,
-    title,
-    error,
-  }: FieldComponentProps) => (
+  string: ({ register, name, id, title, error }: FieldComponentProps) => (
     <FieldGroup>
       <Label id={id}>{title}</Label>
       <input
@@ -37,14 +30,19 @@ export const ComponentDictionary = {
       <p>{error && error.message}</p>
     </FieldGroup>
   ),
-  integer: ({
-    label,
-    register,
-    name,
-    id,
-    title,
-    error,
-  }: FieldComponentProps) => (
+  password: ({ register, name, id, title, error }: FieldComponentProps) => (
+    <FieldGroup>
+      <Label id={id}>{title}</Label>
+      <input
+        type="password"
+        {...register(name)}
+        id={id}
+        className={`${styles.inputBase} ${error ? styles.error : ""}`}
+      />
+      <p>{error && error.message}</p>
+    </FieldGroup>
+  ),
+  integer: ({ register, name, id, title, error }: FieldComponentProps) => (
     <FieldGroup>
       <Label id={id}>{title}</Label>
       <input
@@ -61,6 +59,18 @@ export const ComponentDictionary = {
       <Label id={id}>{title}</Label>
       <input
         type="number"
+        {...register(name)}
+        id={id}
+        className={`${styles.inputBase} ${error ? styles.error : ""}`}
+      />
+      <p>{error && error.message}</p>
+    </FieldGroup>
+  ),
+  date: ({ register, name, id, title, error }: FieldComponentProps) => (
+    <FieldGroup>
+      <Label id={id}>{title}</Label>
+      <input
+        type="date"
         {...register(name)}
         id={id}
         className={`${styles.inputBase} ${error ? styles.error : ""}`}
@@ -105,12 +115,13 @@ export const ComponentDictionary = {
           id={id}
         />
         <Label id={id}>{title}</Label>
+        {error && <p className="!ml-2">({error.message})</p>}
       </FieldGroup>
     );
   },
 };
 
-export const controls = {
+export const controls: UIControls = {
   RemoveRowButton: (props) => (
     <button
       className="p-1 ml-2 border-2 border-pink-500 text-pink-500 rounded-lg"

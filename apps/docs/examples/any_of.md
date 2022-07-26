@@ -8,13 +8,16 @@
     "properties": {
       "requestType": {
         "title": "Request Type",
+        "required": ["firstName", "idCode"],
         "anyOf": [
           {
             "title": "Example 1",
             "properties": {
               "firstName": {
                 "type": "string",
-                "title": "First Name"
+                "title": "First Name",
+                "minLength": 1,
+                "errorMessage": "First Name is required"
               }
             }
           },
@@ -23,13 +26,16 @@
             "properties": {
               "idCode": {
                 "type": "string",
-                "title": "Id Code"
+                "title": "Id Code",
+                "minLength": 9,
+                "errorMessage": "ID Code is required and must be 9 characters"
               }
             }
           }
         ]
       }
-    }
+    },
+    "required": ["requestType"]
   }
 }
 ---

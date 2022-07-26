@@ -7,8 +7,8 @@ import {
   cleanup,
   act,
 } from "@testing-library/react";
-import { FormSchema } from "../FormSchema";
-import { JSONFormSchema } from "../types";
+import { FormSchema } from ".";
+import { JSONFormSchema } from "../../types";
 import { UseFormReturn } from "react-hook-form";
 
 const schema: JSONFormSchema = {

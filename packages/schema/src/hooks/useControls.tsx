@@ -1,4 +1,3 @@
-import React, { useState, useCallback } from "react";
 import {
   DefaultAddRowButton,
   DefaultRemoveRowButton,
@@ -7,10 +6,11 @@ import {
   DefaultArrayErrorMsg,
   DefaultArrayTitle,
   DefaultRowContainer,
-} from "../RenderSchema/components";
+} from "../Components/fields/DefaultControls";
 
 export default function useControls({ uiSchema }: any) {
-  const { controls = {} } = uiSchema;
+  let controls = {};
+  uiSchema?.controls ? (controls = { ...uiSchema.controls }) : {};
   return {
     RowRenderer: DefaultRowRenderer,
     AddRowButton: DefaultAddRowButton,

@@ -1,48 +1,28 @@
 ---json
 {
-  "title": "Basic Example",
-  "uiSchema": {
-    "rowMap": [
-      [
-        "username"
-      ],
-      [
-        "password"
-      ],
-      [
-        "agreeTOS"
-      ]
-    ]
+  "title": "Array Basic",
+  "uiSchema": {},
+  "defaultValues": {
+    "games": ["Destiny 2"]
   },
   "schema": {
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
     "properties": {
-      "username": {
-        "type": "string",
-        "title": "Username",
-        "isNotEmpty": true,
-        "errorMessage": "Please enter your username"
-      },
-      "password": {
-        "type": "string",
-        "component": "password",
-        "title": "Password",
-        "minLength": 1,
-        "errorMessage": "Please enter your password"
-      },
-      "agreeTOS": {
-        "type": "boolean",
-        "title": "I Agree to the terms and conditions",
-        "errorMessage": "Please agree to the terms and conditions",
-        "trueRequired": true
+      "games": {
+        "type": "array",
+        "title": "Games",
+        "items": {
+          "type": "string",
+          "title": "Game Title",
+          "minLength": 1,
+          "errorMessage": "Please enter a game title"
+        },
+        "minItems": 1,
+        "errorMessage": "Please add atleast 1 game title"
       }
     },
-    "required": [
-      "username",
-      "password",
-      "agreeTOS"
-    ]
+    "required": ["games"]
   }
 }
 ---

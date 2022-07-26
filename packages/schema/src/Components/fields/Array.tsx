@@ -13,11 +13,15 @@ function renderArrayItems({
 }: any) {
   return items.map(
     ({ type, component = null, ...fieldProps }: any, index: number) => {
-      const error = get(
-        formState.errors,
-        `${parentName}.${idx}.${fieldProps.name}`,
-        null
-      );
+      const error =
+        fieldProps.name !== ""
+          ? get(
+              formState.errors,
+              `${parentName}.${idx}.${fieldProps.name}`,
+              null
+            )
+          : get(formState.errors, `${parentName}.${idx}`);
+
       const Component =
         components[component || type] ?? components[component || type];
       if (!Component) {
@@ -32,8 +36,12 @@ function renderArrayItems({
           {...rest}
           {...fieldProps}
           error={error}
-          name={`${parentName}.${idx}.${fieldProps.name}`}
-          id={`id_${parentName}.${idx}.${fieldProps.name}`}
+          name={`${parentName}.${idx}${
+            fieldProps.name !== "" ? `.${fieldProps.name}` : ""
+          }`}
+          id={`id_${parentName}.${idx}${
+            fieldProps.name !== "" ? `.${fieldProps.name}` : ""
+          }`}
           components={components}
           key={`${key}_${index}`}
         />
@@ -63,12 +71,17 @@ export default function ArrayField({
     ...rest,
   });
 
-  const addRowValues = items
-    ?.map((item: { name: string }) => item.name)
-    ?.reduce((acc: Record<string, string>, curr: string) => {
+  const addRowValues = () => {
+    const names = items?.map((item: { name: string }) => item.name);
+    // if theres no name we know this is a string
+    if (names && names[0] === "") {
+      return "";
+    }
+    return names?.reduce((acc: Record<string, string>, curr: string) => {
       acc[curr] = "";
       return acc;
     }, {});
+  };
   return (
     <div>
       <controls.ArrayTitle>{title}</controls.ArrayTitle>
@@ -88,7 +101,7 @@ export default function ArrayField({
           <controls.RemoveRowButton onClick={() => remove(index)} />
         </controls.RowContainer>
       ))}
-      <controls.AddRowButton onClick={() => append(addRowValues)} />
+      <controls.AddRowButton onClick={() => append(addRowValues())} />
       {error && (
         <controls.ArrayErrorMessage>{error.message}</controls.ArrayErrorMessage>
       )}
