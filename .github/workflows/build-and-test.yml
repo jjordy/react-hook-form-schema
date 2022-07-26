@@ -16,8 +16,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Cache node modules
-        id: cache-npm
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
         uses: actions/cache@v3
         env:
           cache-name: cache-node-modules
