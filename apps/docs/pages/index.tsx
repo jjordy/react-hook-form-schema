@@ -87,6 +87,16 @@ export default function Docs({ guides, examples }) {
               </div>
             </div>
           </div>
+          <div className="container mx-auto p-8 lg:p-32 bg-slate-900/60 rounded w-full">
+            <div>
+              <div className="text-xl text-center lg:text-6xl font-black my-4 md:my-0">
+                Still in early development
+                <br />
+                <br />
+                🚀 Stay Tuned 🚀
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
