@@ -50,9 +50,6 @@
     "setupFiles": [
       "./setupTests.ts"
     ],
-    "resolver": "<rootDir>/resolver.js",
-    "prettier": {
-      "printWidth": 80
-    }
+    "resolver": "<rootDir>/resolver.js"
   }
 }
