@@ -1,9 +1,8 @@
 {
   "name": "react-hook-form-schema",
   "version": "1.0.1",
-  "type": "module",
   "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "module": "./dist/esm/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist/**"
@@ -11,8 +10,8 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "build": "tsup src/index.tsx --format esm,cjs --dts",
-    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts",
+    "build": "tsup src/index.tsx --format esm,cjs --dts --legacy-output",
+    "dev": "tsup src/index.tsx --format esm,cjs --watch --dts --legacy-output",
     "test": "jest"
   },
   "devDependencies": {

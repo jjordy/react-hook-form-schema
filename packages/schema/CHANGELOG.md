@@ -1,5 +1,11 @@
 # react-hook-form-schema
 
+## 1.0.2
+
+### Major Changes
+
+- Updated package.json to module type to fix import issues
+
 ## 1.0.1
 
 ### Patch Changes
