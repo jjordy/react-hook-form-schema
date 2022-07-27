@@ -1,5 +1,11 @@
 # react-hook-form-schema
 
+## 1.0.3
+
+### Patch Changes
+
+- Fixed esm imports hopefully
+
 ## 1.0.2
 
 ### Major Changes
